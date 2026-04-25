@@ -1,0 +1,39 @@
+# vaultrot example configuration
+# Copy this file to vaultrot.yaml and adjust to your environment.
+
+# dry_run: when true, no secrets are actually rotated.
+# Overridable via --dry-run CLI flag.
+dry_run: false
+
+# secrets: list of secrets to rotate on each run.
+secrets:
+  - name: db-password
+    path: /prod/myapp/db/password
+    backend: aws_ssm
+
+  - name: api-key
+    path: secret/data/myapp/api-key
+    backend: vault
+
+  - name: stripe-secret
+    path: STRIPE_SECRET_KEY
+    backend: doppler
+
+# vault: settings for HashiCorp Vault backend.
+vault:
+  address: "http://127.0.0.1:8200"
+  # token: prefer VAULT_TOKEN env variable over hardcoding here.
+  token: ""
+
+# aws_ssm: settings for AWS Systems Manager Parameter Store backend.
+aws_ssm:
+  region: "us-east-1"
+  # AWS credentials are resolved via the standard AWS credential chain
+  # (env vars, ~/.aws/credentials, IAM role, etc.).
+
+# doppler: settings for Doppler secrets manager backend.
+doppler:
+  # token: prefer DOPPLER_TOKEN env variable over hardcoding here.
+  token: ""
+  project: "myapp"
+  config: "prd"
