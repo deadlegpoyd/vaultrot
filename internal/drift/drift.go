@@ -104,3 +104,13 @@ func (r *Report) HasDrift() bool {
 	}
 	return false
 }
+
+// Summary returns a concise breakdown of entry statuses in the report,
+// mapping each Status to the number of entries carrying that status.
+func (r *Report) Summary() map[Status]int {
+	counts := make(map[Status]int)
+	for _, e := range r.Entries {
+		counts[e.Status]++
+	}
+	return counts
+}
