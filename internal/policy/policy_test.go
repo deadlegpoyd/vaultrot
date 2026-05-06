@@ -85,3 +85,11 @@ func TestRequiresRotation_False_NoMaxAge(t *testing.T) {
 		t.Fatal("expected RequiresRotation false when no max_age_days set")
 	}
 }
+
+func TestRequiresRotation_False_WithinMaxAge(t *testing.T) {
+	p, _ := policy.New(policy.Config{MaxAgeDays: 30}, clock())
+	last := fixedNow.Add(-15 * 24 * time.Hour) // 15 days ago, within 30-day max
+	if p.RequiresRotation(last) {
+		t.Fatal("expected RequiresRotation false when secret is within max age")
+	}
+}
