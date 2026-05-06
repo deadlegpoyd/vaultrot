@@ -51,6 +51,17 @@ func TestMask_PeekExceedsLength_FullyRedacts(t *testing.T) {
 	}
 }
 
+func TestMask_PeekPrefixOnly(t *testing.T) {
+	r := redact.New(redact.WithMask("***"), redact.WithPeek(3, 0))
+	got := r.Mask("supersecret")
+	if !strings.HasPrefix(got, "sup") {
+		t.Fatalf("expected prefix 'sup', got %q", got)
+	}
+	if !strings.HasSuffix(got, "***") {
+		t.Fatalf("expected mask as suffix, got %q", got)
+	}
+}
+
 func TestMaskMap_RedactsAllValues(t *testing.T) {
 	r := redact.New()
 	input := map[string]string{
