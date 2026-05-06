@@ -27,6 +27,15 @@ func TestSummary_Counts(t *testing.T) {
 	}
 }
 
+func TestSummary_Counts_Empty(t *testing.T) {
+	s := NewSummary(false)
+
+	success, skipped, failed := s.Counts()
+	if success != 0 || skipped != 0 || failed != 0 {
+		t.Errorf("expected all zero counts for empty summary, got success=%d skipped=%d failed=%d", success, skipped, failed)
+	}
+}
+
 func TestSummary_Print_DryRun(t *testing.T) {
 	s := NewSummary(true)
 	s.Add(Result{
