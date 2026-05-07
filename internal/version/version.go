@@ -43,6 +43,13 @@ func Get() Info {
 	}
 }
 
+// String returns a compact single-line representation of the version info,
+// suitable for use in log output or --version flags.
+func (i Info) String() string {
+	return fmt.Sprintf("%s (commit=%s, built=%s, go=%s, %s/%s)",
+		i.Version, i.Commit, formatDate(i.Date), i.GoVersion, i.OS, i.Arch)
+}
+
 // Print writes a formatted version table to the given writer.
 // If w is nil it falls back to os.Stdout.
 func Print(w io.Writer) {
