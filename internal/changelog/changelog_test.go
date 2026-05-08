@@ -88,6 +88,18 @@ func TestWrite_DryRunTag(t *testing.T) {
 	}
 }
 
+func TestWrite_EmptyChangelog(t *testing.T) {
+	cl := changelog.New(fixedClock())
+	var buf bytes.Buffer
+	if err := cl.Write(&buf); err != nil {
+		t.Fatalf("Write on empty changelog returned error: %v", err)
+	}
+	// An empty changelog should produce no output.
+	if buf.Len() != 0 {
+		t.Errorf("expected empty output for empty changelog, got: %q", buf.String())
+	}
+}
+
 func TestEntries_ReturnsCopy(t *testing.T) {
 	cl := changelog.New(fixedClock())
 	cl.Record("vault", "k", "u", "rotated", "", false)
